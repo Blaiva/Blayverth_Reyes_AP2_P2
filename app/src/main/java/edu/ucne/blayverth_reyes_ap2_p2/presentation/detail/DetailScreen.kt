@@ -15,6 +15,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -24,10 +25,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
+    id: Int,
     viewModel: DetailViewModel = hiltViewModel(),
     onBack: () -> Unit
 ){
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(id) {
+        viewModel.loadGasto(id)
+    }
 
     Scaffold(
         topBar = {

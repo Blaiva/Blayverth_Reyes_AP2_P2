@@ -5,7 +5,7 @@ import edu.ucne.blayverth_reyes_ap2_p2.domain.model.Model
 
 @JsonClass(generateAdapter = true)
 data class Dto(
-    val id: Int,
+    val gastoId: Int,
     val fecha: String,
     val suplidor: String,
     val ncf: String,
@@ -13,7 +13,7 @@ data class Dto(
     val monto: Double
 ){
     fun toDomain() = Model(
-        id = id,
+        gastoId = gastoId,
         fecha = fecha,
         suplidor = suplidor,
         ncf = ncf,

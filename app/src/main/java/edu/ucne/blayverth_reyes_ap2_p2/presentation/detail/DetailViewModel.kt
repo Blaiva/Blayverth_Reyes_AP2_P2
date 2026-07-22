@@ -16,18 +16,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val getGastoDetailUseCase: GetGastoDetailUseCase,
-    savedState: SavedStateHandle
+    private val getGastoDetailUseCase: GetGastoDetailUseCase
 ): ViewModel() {
     private val _state = MutableStateFlow(DetailUiState())
     val state = _state.asStateFlow()
 
-    init {
-        val args = savedState.toRoute<Screen.Detail>()
-        loadGasto(args.id)
-    }
-
-    private fun loadGasto(id: Int) {
+    fun loadGasto(id: Int) {
         viewModelScope.launch {
             getGastoDetailUseCase(id).collect { result ->
                 when (result) {

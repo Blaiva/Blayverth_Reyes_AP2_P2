@@ -15,7 +15,7 @@ class RepositoryImp @Inject constructor(
         emit(Resource.Loading())
         val response = remoteDataSource.getGastos()
         response.onSuccess { gastosList ->
-            val gastosDominio = gastosList.items.map { it.toDomain() }
+            val gastosDominio = gastosList.map { it.toDomain() }
             emit(Resource.Success(gastosDominio))
         }.onFailure { exception ->
             emit(Resource.Error(exception.message ?: "Error desconocido al obtener gastos"))

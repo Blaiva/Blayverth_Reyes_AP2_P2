@@ -28,8 +28,9 @@ fun AppNavDisplay(
                 )
             }
 
-            entry<Screen.Detail>{
+            entry<Screen.Detail>{key ->
                 DetailScreen(
+                    id = key.id,
                     onBack = {
                         if(backStack.isNotEmpty()) backStack.removeAt(backStack.size - 1)
                     }

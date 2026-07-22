@@ -28,7 +28,7 @@ object AppModule {
     @Singleton
     fun provideApi(moshi: Moshi): Api{
         return Retrofit.Builder()
-            .baseUrl("https://api-2026-h7eddqgydxc0fmau.eastus2-01.azurewebsites.net/")
+            .baseUrl("https://api-2026-h7eddqgydxc0fmau.eastus2-01.azurewebsites.net/api/")
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
             .create(Api::class.java)
