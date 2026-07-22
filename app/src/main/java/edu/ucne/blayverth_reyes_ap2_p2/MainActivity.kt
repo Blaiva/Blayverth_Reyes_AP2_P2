@@ -11,18 +11,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation3.runtime.rememberNavBackStack
+import dagger.hilt.android.AndroidEntryPoint
+import edu.ucne.blayverth_reyes_ap2_p2.presentation.navigation.AppNavDisplay
+import edu.ucne.blayverth_reyes_ap2_p2.presentation.navigation.Screen
 import edu.ucne.blayverth_reyes_ap2_p2.ui.theme.Blayverth_Reyes_AP2_P2Theme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             Blayverth_Reyes_AP2_P2Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                val backStack = rememberNavBackStack(Screen.List)
+
+                Scaffold { innerPadding ->
+                    AppNavDisplay(
+                        backStack = backStack,
+                        innerPadding = innerPadding
                     )
                 }
             }
@@ -30,18 +37,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Blayverth_Reyes_AP2_P2Theme {
-        Greeting("Android")
-    }
-}

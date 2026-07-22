@@ -6,7 +6,10 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import edu.ucne.blayverth_reyes_ap2_p2.data.RepositoryImp
 import edu.ucne.blayverth_reyes_ap2_p2.data.remote.Api
+import edu.ucne.blayverth_reyes_ap2_p2.data.remote.RemoteDataSource
+import edu.ucne.blayverth_reyes_ap2_p2.domain.repository.Repository
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
@@ -25,9 +28,17 @@ object AppModule {
     @Singleton
     fun provideApi(moshi: Moshi): Api{
         return Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl("https://api-2026-h7eddqgydxc0fmau.eastus2-01.azurewebsites.net/")
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
             .create(Api::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGastoRepository(
+        gastoRemoteDataSource: RemoteDataSource
+    ): Repository {
+        return RepositoryImp(gastoRemoteDataSource)
     }
 }
