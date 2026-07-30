@@ -25,8 +25,12 @@ class DetailViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     fun loadGasto(id: Int) {
+        if (id <= 0) {
+            _state.update { DetailUiState(gastoId = 0) }
+            return
+        }
+
         _state.update { DetailUiState() }
-        if (id <= 0) return
 
         viewModelScope.launch {
             getGastoDetailUseCase(id).collect { result ->
