@@ -7,7 +7,7 @@ import javax.inject.Inject
 class RemoteDataSource @Inject constructor(
     private val api: Api
 ) {
-    suspend fun getGastos(): Result<List<Dto>>{
+    suspend fun getGastos(): Result<List<Dto>> {
         return try {
             val response = api.getGastos()
             if (response.isSuccessful && response.body() != null) {
@@ -22,7 +22,7 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun getGastoDetail(id: Int): Result<Dto>{
+    suspend fun getGastoDetail(id: Int): Result<Dto> {
         return try {
             val response = api.getGastoDetail(id)
             if (response.isSuccessful && response.body() != null) {
@@ -34,6 +34,36 @@ class RemoteDataSource @Inject constructor(
             Result.failure(Exception("Error de servidor", e))
         } catch (e: Exception) {
             Result.failure(Exception("Error desconocido", e))
+        }
+    }
+
+    suspend fun saveGasto(dto: Dto): Result<Dto> {
+        return try {
+            val response = api.saveGasto(dto)
+            if (response.isSuccessful && response.body() != null) {
+                Result.success(response.body()!!)
+            } else {
+                Result.failure(Exception("Error de red ${response.code()}"))
+            }
+        } catch (e: HttpException) {
+            Result.failure(Exception("Error de servidor", e))
+        } catch (e: Exception) {
+            Result.failure(Exception("Error desconocido ${e.localizedMessage}", e))
+        }
+    }
+
+    suspend fun updateGasto(id: Int, dto: Dto): Result<Unit> {
+        return try {
+            val response = api.updateGasto(id, dto)
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("Error de red ${response.code()}"))
+            }
+        } catch (e: HttpException) {
+            Result.failure(Exception("Error de servidor", e))
+        } catch (e: Exception) {
+            Result.failure(Exception("Error desconocido ${e.localizedMessage}", e))
         }
     }
 }

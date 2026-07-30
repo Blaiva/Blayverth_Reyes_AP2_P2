@@ -23,7 +23,7 @@ class ListViewModel @Inject constructor(
         loadGastos()
     }
 
-    private fun loadGastos() {
+    fun loadGastos() {
         viewModelScope.launch {
             getGastosUseCase().collect { result ->
                 when (result) {

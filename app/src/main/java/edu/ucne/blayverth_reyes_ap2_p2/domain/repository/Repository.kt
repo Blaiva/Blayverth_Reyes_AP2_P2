@@ -7,4 +7,6 @@ import kotlinx.coroutines.flow.Flow
 interface Repository {
     fun getGastos(): Flow<Resource<List<Model>>>
     fun getGastoDetail(id: Int): Flow<Resource<Model>>
+    fun saveGasto(gasto: Model): Flow<Resource<Model>>
+    fun updateGasto(id: Int, gasto: Model): Flow<Resource<Model>>
 }

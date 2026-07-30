@@ -22,8 +22,11 @@ fun AppNavDisplay(
         entryProvider = entryProvider {
             entry<Screen.List>{
                 ListScreen(
-                    onClick = {id ->
-                        backStack.add(Screen.Detail(id))
+                    onAddGasto = {
+                        backStack.add(Screen.Detail(id = 0))
+                    },
+                    onEditGasto = {id ->
+                        backStack.add(Screen.Detail(id = id))
                     }
                 )
             }

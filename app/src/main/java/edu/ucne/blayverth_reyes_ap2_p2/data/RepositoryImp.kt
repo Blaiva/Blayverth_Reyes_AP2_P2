@@ -2,6 +2,7 @@ package edu.ucne.blayverth_reyes_ap2_p2.data
 
 import edu.ucne.blayverth_reyes_ap2_p2.data.remote.RemoteDataSource
 import edu.ucne.blayverth_reyes_ap2_p2.data.remote.Resource
+import edu.ucne.blayverth_reyes_ap2_p2.data.remote.dto.Dto
 import edu.ucne.blayverth_reyes_ap2_p2.domain.model.Model
 import edu.ucne.blayverth_reyes_ap2_p2.domain.repository.Repository
 import kotlinx.coroutines.flow.Flow
@@ -29,6 +30,42 @@ class RepositoryImp @Inject constructor(
             emit(Resource.Success(gastoDto.toDomain()))
         }.onFailure { exception ->
             emit(Resource.Error(exception.message ?: "Error desconocido al obtener el detalle"))
+        }
+    }
+
+    override fun saveGasto(gasto: Model): Flow<Resource<Model>> = flow {
+        emit(Resource.Loading())
+        val dto = Dto(
+            gastoId = gasto.gastoId,
+            fecha = gasto.fecha,
+            suplidor = gasto.suplidor,
+            ncf = gasto.ncf,
+            itbis = gasto.itbis,
+            monto = gasto.monto
+        )
+        val response = remoteDataSource.saveGasto(dto)
+        response.onSuccess { gastoDto ->
+            emit(Resource.Success(gastoDto.toDomain()))
+        }.onFailure { exception ->
+            emit(Resource.Error(exception.message ?: "Error al guardar el gasto"))
+        }
+    }
+
+    override fun updateGasto(id: Int, gasto: Model): Flow<Resource<Model>> = flow {
+        emit(Resource.Loading())
+        val dto = Dto(
+            gastoId = gasto.gastoId,
+            fecha = gasto.fecha,
+            suplidor = gasto.suplidor,
+            ncf = gasto.ncf,
+            itbis = gasto.itbis,
+            monto = gasto.monto
+        )
+        val response = remoteDataSource.updateGasto(id, dto)
+        response.onSuccess {
+            emit(Resource.Success(gasto))
+        }.onFailure { exception ->
+            emit(Resource.Error(exception.message ?: "Error al actualizar el gasto"))
         }
     }
 }

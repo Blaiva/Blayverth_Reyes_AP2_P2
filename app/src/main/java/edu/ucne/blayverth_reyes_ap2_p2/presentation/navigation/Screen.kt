@@ -8,5 +8,5 @@ sealed class Screen: NavKey {
     data object List: Screen()
 
     @Serializable
-    data class Detail(val id: Int): Screen()
+    data class Detail(val id: Int = 0): Screen()
 }

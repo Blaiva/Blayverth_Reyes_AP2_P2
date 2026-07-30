@@ -10,14 +10,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,19 +31,28 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.ucne.blayverth_reyes_ap2_p2.domain.model.Model
-import androidx.compose.foundation.lazy.items
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListScreen(
-    viewModel: ListViewModel = hiltViewModel(),
-    onClick: (Int) -> Unit
+    onAddGasto: () -> Unit,
+    onEditGasto: (Int) -> Unit,
+    viewModel: ListViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(key1 = true) {
+        viewModel.loadGastos()
+    }
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(title = { Text("Lista de Gastos") })
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = onAddGasto) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = "Agregar Gasto")
+            }
         }
     ) { padding ->
         Column(
@@ -69,7 +84,7 @@ fun ListScreen(
                 items(state.gastos) { gasto ->
                     Item(
                         gasto = gasto,
-                        onClick = { onClick(gasto.gastoId) }
+                        onClick = { onEditGasto(gasto.gastoId) }
                     )
                 }
             }
